@@ -1,0 +1,32 @@
+{
+    "name": "erdmenchen/laravel-bitbucket-deploy",
+    "description": "Deploy your Laravel app via Bitbucket pipelines and envoyer",
+    "type": "library",
+    "require": {
+	"php": "^7.3",
+        "illuminate/support": "^6.6"
+    },
+    "require-dev": {
+	"phpunit/phpunit": "^8.4",
+	"orchestra/testbench": "^4.4"
+    },
+    "license": "GNU General Public License v3.0",
+    "minimum-stability": "stable",
+    "autoload": {
+	    "psr-4": {
+       	    "Erdmenchen\\LaravelBitbucketDeploy\\": "src"
+    	}
+    }, 
+    "autoload-dev": {
+    	"psr-4": {
+            "Erdmenchen\\LaravelBitbucketDeploy\\Test\\": "tests"
+    	}
+    },
+    "extra": {
+    	"laravel": {
+            "providers": [
+            	"Erdmenchen\\LaravelBitbucketDeploy\\LaravelBitbucketDeployServiceProvider"
+            ]
+    	}
+    }
+}

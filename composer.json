@@ -10,7 +10,7 @@
 	"phpunit/phpunit": "^8.4",
 	"orchestra/testbench": "^4.4"
     },
-    "license": "GNU General Public License v3.0",
+    "license": "GPL-3.0-or-later",
     "minimum-stability": "stable",
     "autoload": {
 	    "psr-4": {

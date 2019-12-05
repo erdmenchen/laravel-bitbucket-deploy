@@ -20,6 +20,10 @@ class LaravelBitbucketDeployServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->publishes([
+            __DIR__ . '/deploy-manifest.json' => base_path('deploy-manifest.json'),
+            //__DIR__ . '/config' => config_path('laravel-bitbucket-deploy'),
+        ]);
     }
 
 

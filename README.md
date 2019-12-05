@@ -1,8 +1,14 @@
 # laravel-bitbucket-deploy
 Deploy your laravel app via bitbucket pipelines and envoyer.
 
-> **Important:**
-> Be sure, that your project (migrations!) is working as expected (tests!), because there is no backup mechanism during the deployment! 
+<p align="center">
+    <a href="https://packagist.org/packages/erdmenchen/laravel-bitbucket-deploy"><img src="https://poser.pugx.org/erdmenchen/laravel-bitbucket-deploy/downloads"></a>
+    <a href="https://packagist.org/packages/erdmenchen/laravel-bitbucket-deploy"><img src="https://poser.pugx.org/erdmenchen/laravel-bitbucket-deploy/version"></a>
+    <a href="https://packagist.org/packages/erdmenchen/laravel-bitbucket-deploy"><img src="https://poser.pugx.org/erdmenchen/laravel-bitbucket-deploy/license"></a>
+</p>
+
+> **Important:** <br />
+> Be sure, that your project (migrations!) is working as expected (tests!), because there is no backup mechanism during the deployment! <br />
 > Do not deploy to production only, always test releases on staging before!
 
 ## Installation
@@ -28,9 +34,9 @@ In order to get the build and deployment pipeline going at Bitbucket, you need t
 ## Hosting Configuration
 The deployment script requires the following folder structure on the web hosting in order to work:
 * Deployment Target Folder
-    ** .env (Laravel environment config file)
-    ** releases (each deployment will be placed here by the script in unique folders)
-    ** storage (Laravel storage folder)
+    * .env (Laravel environment config file)
+    * releases (each deployment will be placed here by the script in unique folders)
+    * storage (Laravel storage folder)
 
 During each deployment, the `.env` file and the `storage` folder are referenced into the current build folder via symlinks.
 Additionally a symlink `current` will be created (or updated) in the deployment folder, which points to the latest build folder.

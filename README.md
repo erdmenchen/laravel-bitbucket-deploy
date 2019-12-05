@@ -4,6 +4,7 @@ Deploy your laravel app via bitbucket pipelines and envoyer.
 <p align="center">
     <a href="https://packagist.org/packages/erdmenchen/laravel-bitbucket-deploy"><img src="https://poser.pugx.org/erdmenchen/laravel-bitbucket-deploy/downloads"></a>
     <a href="https://packagist.org/packages/erdmenchen/laravel-bitbucket-deploy"><img src="https://poser.pugx.org/erdmenchen/laravel-bitbucket-deploy/version"></a>
+    <a href="https://packagist.org/packages/erdmenchen/laravel-bitbucket-deploy"><img src="https://poser.pugx.org/erdmenchen/laravel-bitbucket-deploy/v/unstable"></a>
     <a href="https://packagist.org/packages/erdmenchen/laravel-bitbucket-deploy"><img src="https://poser.pugx.org/erdmenchen/laravel-bitbucket-deploy/license"></a>
 </p>
 
@@ -48,6 +49,23 @@ This package has the following requirements:
 
 - PHP 7.3 or higher
 - Laravel 6.0 or higher
+
+## Function
+This package scaffolds a Bitbucket pipeline script and a Laravel Envoyer script into your Laravel project.
+
+When a new pipeline run is triggered (via git commit or manually) a full CI/CD (Continuous Integration/Continuous Delivery) build is executed with the following steps:
+
+1. Fetch source code and install PHP dependencies (`Build PHP`)
+2. Run `phpunit` and gather results - stops on any failed test (`Test PHP`)
+3. Install javascript dependencies via npm and build UI assets(`Build Assets`)
+4. Deploy to staging / production - connects to hosting via ssh and pushes build (`Deploy`)
+    * Create manifest file with original trigger commit details
+    * Create symlinks to `.env` and `storage`
+    * Check Laravel health (running `php artisan --version`)
+    * Activate build by updating the `current` symlink
+    * Optimise, migrate and cleanup Laravel project
+
+The last step (step 4) is only executed when triggered from a commit on `develop` or `master` branch.
 
 ## License
 The GNU General Public License v3.0. Please see [License File](LICENSE) for more information.

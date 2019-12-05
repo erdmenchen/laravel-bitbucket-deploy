@@ -1,0 +1,77 @@
+image: php:7.2-fpm
+
+definitions:
+  steps:
+    - step: &php-build
+        name: Build PHP
+        caches:
+          - composer
+        script:
+          - apt-get update && apt-get install -qy unzip git curl libmcrypt-dev
+          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - composer --version
+          - composer install --optimize-autoloader --no-interaction --prefer-dist --ignore-platform-reqs
+        artifacts:
+          - vendor/**
+    - step: &php-test
+        name: Test PHP
+        script:
+          - cp .env.example .env
+          - php artisan key:generate
+          - ./vendor/bin/phpunit --log-junit ./test-reports/junit.xml
+        artifacts:
+          - test-reports/**
+    - step: &npm-build
+        name: Build Assets
+        image: node:8.10.0
+        caches:
+          - node
+        script:
+          - npm install
+          - yarn
+          - npm run production
+        artifacts:
+          - public/**
+    - step: &deploy-production
+        name: Deploy (Production)
+        deployment: production
+        caches:
+          - composer
+        script:
+          - apt-get update && apt-get install -qy unzip git curl libmcrypt-dev rsync
+          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - composer --version
+          - composer global require "laravel/envoy"
+          - ~/.composer/vendor/bin/envoy run deploy --host=$DEPLOY_HOST --user=$DEPLOY_USER --path=$DEPLOY_PATH --build=$BITBUCKET_BUILD_NUMBER --commit=$BITBUCKET_COMMIT --branch=$BITBUCKET_BRANCH --php=php --dir=$BITBUCKET_CLONE_DIR
+    - step: &deploy-staging
+        name: Deploy (Staging)
+        deployment: staging
+        caches:
+          - composer
+        script:
+          - apt-get update && apt-get install -qy unzip git curl libmcrypt-dev rsync
+          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - composer --version
+          - composer global require "laravel/envoy"
+          - ~/.composer/vendor/bin/envoy run deploy --host=$DEPLOY_HOST --user=$DEPLOY_USER --path=$DEPLOY_PATH --build=$BITBUCKET_BUILD_NUMBER --commit=$BITBUCKET_COMMIT --branch=$BITBUCKET_BRANCH --php=php --dir=$BITBUCKET_CLONE_DIR
+
+pipelines:
+  default:
+    - step: *php-build
+    - step: *php-test
+    - step: *npm-build
+  branches:
+    master:
+      - step: *php-build
+      - step: *php-test
+      - step: *npm-build
+      - step: *deploy-production
+    develop:
+      - step: *php-build
+      - step: *php-test
+      - step: *npm-build
+      - step: *deploy-staging
+    feature/*:
+      - step: *php-build
+      - step: *php-test
+      - step: *npm-build

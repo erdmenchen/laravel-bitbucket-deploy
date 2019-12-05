@@ -1,0 +1,13 @@
+/bootstrap/cache/*.php
+/.*
+/node_modules
+/storage
+/vendor/composer/composer/tests/*
+bitbucket-pipelines.yml
+deployment-exclude-list.txt
+Envoy.blade.php
+package-lock.json
+package.json
+README.md
+webpack.mix.js
+yarn.lock

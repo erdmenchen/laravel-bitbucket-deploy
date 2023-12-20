@@ -43,6 +43,9 @@ The deployment script requires the following folder structure on the web hosting
     * .env (Laravel environment config file)
     * releases (each deployment will be placed here by the script in unique folders)
     * storage (Laravel storage folder)
+        * framework/sessions
+        * framework/views
+        * framework/cache
 
 During each deployment, the `.env` file and the `storage` folder are referenced into the current build folder via symlinks.
 Additionally a symlink `current` will be created (or updated) in the deployment folder, which points to the latest build folder.
